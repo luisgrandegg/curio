@@ -1,0 +1,14 @@
+import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { AuthModule } from "./auth/auth.module.js";
+import { HealthModule } from "./health/health.module.js";
+
+@Module({
+  imports: [
+    // Global so any provider can inject ConfigService without re-importing.
+    ConfigModule.forRoot({ isGlobal: true }),
+    AuthModule,
+    HealthModule,
+  ],
+})
+export class AppModule {}
