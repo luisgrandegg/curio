@@ -1,6 +1,6 @@
 # B02 — API base
 
-**MVP step:** 3 · **Depends on:** B00, B01 · **Status:** ☐
+**MVP step:** 3 · **Depends on:** B00, B01 · **Status:** ☑ Done
 
 ## Goal
 
@@ -29,3 +29,17 @@ NestJS 11 app boots with config, CORS, and a health check.
 
 - e2e/unit: health 200; login success + failure paths; config loads.
 - ≥ 70% coverage on auth controller/service and config wiring.
+
+## Outcome (done)
+
+- NestJS 11 (ESM) bootstrap with global `ConfigModule`, `enableCors`
+  (`CORS_ORIGIN`), and a `ValidationPipe`.
+- `GET /health` → `{ ok: true }`; `POST /auth/login` (validated `LoginDto`) →
+  `{ token }` via `JwtModule` (1h TTL); bad creds → 401, invalid body → 400.
+- Build/test toolchain decision recorded in **ADR-0002** (ESM + `tsc` build +
+  SWC for Vitest/dev, since esbuild can't emit decorator metadata).
+- Tests: `HealthController`, `AuthService` (JWT verify + both failure paths),
+  and an `AppModule` integration test — **100%** coverage (18/18 stmts,
+  14/14 branches, 6/6 funcs); `main.ts` bootstrap excluded.
+- Verified against a running build: `/health`, login good/bad/invalid via curl.
+- `// TEST:` HTTP-level CORS/pipe e2e deferred.

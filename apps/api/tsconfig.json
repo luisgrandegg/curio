@@ -2,7 +2,13 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    // NestJS DI relies on legacy decorator metadata, and on value imports
+    // surviving emit — so the API opts out of verbatim module syntax.
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "verbatimModuleSyntax": false,
+    "useDefineForClassFields": false
   },
   "include": ["src/**/*.ts"]
 }
