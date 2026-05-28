@@ -1,0 +1,33 @@
+{
+  "name": "@curio/config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "files": [
+    "eslint",
+    "prettier",
+    "tsconfig"
+  ],
+  "exports": {
+    "./eslint": "./eslint/index.js",
+    "./prettier": "./prettier/index.js",
+    "./tsconfig/base.json": "./tsconfig/base.json"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "test": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@eslint/js": "9.39.4",
+    "eslint-config-prettier": "10.1.8",
+    "globals": "17.6.0",
+    "typescript-eslint": "8.60.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.19.41",
+    "@vitest/coverage-v8": "4.1.7",
+    "eslint": "9.39.4",
+    "typescript": "5.9.3",
+    "vitest": "4.1.7"
+  }
+}

@@ -1,0 +1,13 @@
+# Build output & deps
+node_modules/
+dist/
+.next/
+.turbo/
+coverage/
+pnpm-lock.yaml
+
+# Upstream spec documents — kept verbatim as authored references.
+MVP.md
+PIP_SYSTEM_PROMPT.md
+DEPLOYMENT.md
+CLAUDE_CODE_KICKOFF.md

@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+# Curio pre-push gate.
+# Runs lint, test, and build on AFFECTED services/packages/apps only,
+# so the gate stays fast as the monorepo grows.
+#
+# Turborepo's --affected compares against the merge-base with the
+# default branch; override with TURBO_SCM_BASE if needed.
+#
+# To bypass in a genuine emergency: git push --no-verify (document why).
+
+echo "▶ pre-push: lint + test + build on affected workspaces"
+
+pnpm turbo run lint test build --affected || {
+  echo "✖ pre-push failed — fix lint/test/build before pushing."
+  exit 1
+}
+
+echo "✓ pre-push checks passed"
