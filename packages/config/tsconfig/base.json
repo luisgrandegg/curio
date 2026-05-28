@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Curio config preset",
+  "extends": "../../../tsconfig.base.json"
+}

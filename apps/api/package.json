@@ -1,0 +1,21 @@
+{
+  "name": "api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo \"[api] dev placeholder — NestJS app lands in B02\"",
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@curio/config": "workspace:*",
+    "@types/node": "20.19.41",
+    "@vitest/coverage-v8": "4.1.7",
+    "eslint": "9.39.4",
+    "typescript": "5.9.3",
+    "vitest": "4.1.7"
+  }
+}

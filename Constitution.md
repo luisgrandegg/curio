@@ -2,8 +2,8 @@
 
 > This is the highest-order guide for Curio. When a product, design, or
 > engineering decision is unclear, resolve it in favour of these principles.
-> Specs (`MVP.md`, `PIP_SYSTEM_PROMPT.md`, `DEPLOYMENT.md`) describe *what* we
-> build; this document describes *why*, and how to choose when they don't say.
+> Specs (`MVP.md`, `PIP_SYSTEM_PROMPT.md`, `DEPLOYMENT.md`) describe _what_ we
+> build; this document describes _why_, and how to choose when they don't say.
 
 ---
 
@@ -23,12 +23,14 @@ We are building something children use. The care reflects that.
 These are ordered. When two principles conflict, the higher one wins.
 
 ### 1. A child's wellbeing comes before everything else
+
 No feature, metric, or deadline outranks the safety and dignity of the child
 using Curio. Feedback is always kind. Effort is always praised. A child never
 leaves a session feeling stupid, stuck, or unsafe. When in doubt, choose the
 gentler path.
 
 ### 2. Voice-first is the point, not a feature
+
 The quiz happens by listening and speaking — not reading and writing. This is
 a deliberate design choice that sidesteps the core decoding barrier of
 dyslexia and meets young children where they are. Never quietly reintroduce a
@@ -36,6 +38,7 @@ reading or typing requirement into the core quiz loop. If a feature only works
 by reading, it is not on the critical path.
 
 ### 3. Accessibility is a designed-for property, not an add-on
+
 Dyslexia-friendly design and the accessibility baseline are acceptance
 criteria. Every important piece of information lives in at least two channels —
 text **and** voice **and** icon/colour. Colour is never the only signal. We
@@ -43,26 +46,31 @@ respect keyboard users, screen readers, and `prefers-reduced-motion`. A change
 that regresses accessibility is a broken change.
 
 ### 4. Protect the child's privacy by default
+
 Sessions are ephemeral and in-memory. Pip never asks for personal information
 and never repeats it back. We collect nothing about the child. Where
 production would need consent flows and compliance (COPPA / GDPR-K), we mark
 the gap with `// PROD:` rather than pretending to solve it.
 
 ### 5. The parent can always see what's happening
+
 The full transcript is on screen. A supervising adult can read everything Pip
 says and the child answers. Transparency to the caregiver is non-negotiable.
 
 ### 6. Warmth to the child, honesty to the system
+
 Spoken feedback is always encouraging; the recorded verdict is always honest.
 The scorecard needs truth so it can guide real study; the child hears warmth so
 they keep going. Never blur these two — kindness in tone, accuracy in data.
 
 ### 7. Prefer the simplest thing that works
+
 Build the smallest thing that satisfies the spec and the principles above.
 Where production code would differ, leave a `// PROD:` comment instead of
 building the production version. Do not add features that aren't in the spec.
 
 ### 8. Keep providers swappable
+
 STT, LLM, TTS, and vision sit behind config-driven factories/interfaces. No
 provider SDK calls leak into business logic. This keeps us free to change
 vendors and validates that our abstractions sit at the right level.
@@ -113,6 +121,6 @@ them. English first; Spanish is the obvious next step.
 
 ---
 
-*If a decision isn't covered here, choose the option a thoughtful parent and a
+_If a decision isn't covered here, choose the option a thoughtful parent and a
 careful engineer would both be comfortable with — and add a note here so the
-next person doesn't have to guess.*
+next person doesn't have to guess._

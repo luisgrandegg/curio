@@ -3,10 +3,12 @@
 **MVP step:** 19 · **Depends on:** most items · **Status:** ☐
 
 ## Goal
+
 A README that lets a newcomer understand Curio and run it in under 5 minutes,
 and that documents the design decisions and intentional gaps.
 
 ## Scope — README must include
+
 1. What Curio is (one paragraph) + the voice-first design philosophy.
 2. Mermaid diagram: web ↔ LiveKit ↔ agent ↔ (STT/LLM/TTS); api on the side for
    vision + token + session + read-aloud.
@@ -23,13 +25,16 @@ and that documents the design decisions and intentional gaps.
 10. Note: refresh mid-quiz loses the session; quiz screen is desktop/tablet-first.
 
 ## Acceptance criteria
+
 - A new dev follows quick start and runs the full flow without external help
   beyond providing API keys.
 - All required sections present and accurate.
 
 ## Verification
+
 - Fresh-clone walkthrough following only the README.
 
 ## Test plan / coverage
+
 - Docs item: verify Mermaid renders and quick-start commands are correct. No
   code coverage target; ensure linked commands actually run.

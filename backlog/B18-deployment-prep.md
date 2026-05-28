@@ -6,11 +6,13 @@
 > See `DEPLOYMENT.md` for the full operator guide.
 
 ## Goal
+
 Everything in the repo needed for the Vercel (web) + Koyeb (api + agent)
 free-tier deployment, with the two non-negotiables satisfied: the agent is
 always-on, and all surfaces are HTTPS (camera/mic requirement).
 
 ## Scope
+
 - `apps/api/Dockerfile` — Node 20, pnpm, builds only `api`, EXPOSE 3001,
   starts the web service.
 - `apps/agent/Dockerfile` — same base, no EXPOSE, starts the LiveKit **worker**
@@ -22,14 +24,17 @@ always-on, and all surfaces are HTTPS (camera/mic requirement).
 - A concise operator runbook (or link to `DEPLOYMENT.md`) with the deploy order.
 
 ## Acceptance criteria
+
 - `docker build` succeeds for both `api` and `agent` Dockerfiles.
 - Agent service is configured as a worker (no public port / port health check).
 - No secrets committed; env vars documented per platform.
 
 ## Verification
+
 - Build both images locally; confirm agent image starts the worker and api
   image serves on 3001. Operator follows `DEPLOYMENT.md` deploy order.
 
 ## Test plan / coverage
+
 - Infra item: validate Dockerfiles build and start commands resolve. No unit
   coverage target; `// PROD:` note that there's no CI gating before deploy.

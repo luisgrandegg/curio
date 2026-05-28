@@ -1,0 +1,30 @@
+{
+  "name": "curio",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=20 <23",
+    "pnpm": ">=9 <10"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=web",
+    "dev:api": "turbo run dev --filter=api",
+    "dev:agent": "turbo run dev --filter=agent",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@curio/config": "workspace:*",
+    "husky": "9.1.7",
+    "prettier": "3.8.3",
+    "turbo": "2.9.16",
+    "typescript": "5.9.3"
+  }
+}
