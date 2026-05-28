@@ -34,8 +34,9 @@ spoken quiz with "Pip". Monorepo: `apps/web` (Next.js), `apps/api` (NestJS),
 2. **Write the session test plan** before coding — see below.
 3. Build in thin slices; follow `MVP.md`'s order of implementation.
 4. Keep files small, tests green, coverage ≥ 70%.
-5. **Open a PR when finished.** Don't merge your own WIP into `main`.
-6. **Delete the session test plan** when the session finishes.
+5. **Record an ADR** for any architecture decision you make — see below.
+6. **Open a PR when finished.** Don't merge your own WIP into `main`.
+7. **Delete the session test plan** when the session finishes.
 
 ## Session test plan
 
@@ -62,6 +63,22 @@ The hook lives in `.husky/pre-push`. It activates after `pnpm install` (husky
 
 CI (`.github/workflows/ci.yml`) runs the same affected gate plus
 `format:check` on every PR and push to `main`, so green locally ≈ green in CI.
+
+## Architecture decisions (ADRs)
+
+**Every time you make an architecture decision, document it in an ADR.** This
+includes anything with lasting structural impact: a new dependency or service,
+a provider/abstraction boundary, a data-flow or protocol choice, a build/deploy
+shape, or knowingly deviating from `MVP.md`.
+
+- ADRs live in `docs/adr/`, numbered sequentially (`NNNN-title.md`).
+- Copy `docs/adr/0000-template.md`; keep it short (Context, Decision,
+  Consequences). One decision per file.
+- ADRs are immutable once merged — don't rewrite history. To change a past
+  decision, add a new ADR and mark the old one `Superseded by ADR-NNNN`.
+- Link the ADR from the PR (and the backlog item, if relevant).
+- If a choice is reversible and local, it's probably not an ADR — reserve them
+  for decisions a future contributor would otherwise have to reverse-engineer.
 
 ## Verifying your work
 

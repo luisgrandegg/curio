@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@curio/config": "workspace:*",
+    "@curio/types": "workspace:*",
     "@types/node": "20.19.41",
     "@vitest/coverage-v8": "4.1.7",
     "eslint": "9.39.4",
