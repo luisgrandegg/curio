@@ -1,10 +1,20 @@
 {
-  "name": "agent",
+  "name": "@curio/types",
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "dev": "echo \"[agent] dev placeholder — LiveKit worker lands in B07\"",
     "build": "tsc -p tsconfig.build.json",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
@@ -12,7 +22,6 @@
   },
   "devDependencies": {
     "@curio/config": "workspace:*",
-    "@curio/types": "workspace:*",
     "@types/node": "20.19.41",
     "@vitest/coverage-v8": "4.1.7",
     "eslint": "9.39.4",

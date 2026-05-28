@@ -15,7 +15,7 @@ Every item must also pass the Constitution's product decision tests
 | #   | Item                                                            | Depends on    | Status |
 | --- | --------------------------------------------------------------- | ------------- | ------ |
 | B00 | [Monorepo foundations](./B00-monorepo-foundations.md)           | —             | ☑      |
-| B01 | [Shared types](./B01-shared-types.md)                           | B00           | ☐      |
+| B01 | [Shared types](./B01-shared-types.md)                           | B00           | ☑      |
 | B02 | [API base](./B02-api-base.md)                                   | B00, B01      | ☐      |
 | B03 | [Vision + lessons endpoint](./B03-api-vision-lessons.md) ⭐     | B02           | ☐      |
 | B04 | [Sessions + LiveKit token](./B04-api-sessions-token.md)         | B03           | ☐      |
