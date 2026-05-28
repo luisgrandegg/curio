@@ -21,7 +21,8 @@ mark the old one `Superseded by ADR-NNNN`.
 
 ## Index
 
-| ADR                                             | Title                                     | Status   |
-| ----------------------------------------------- | ----------------------------------------- | -------- |
-| [0001](./0001-record-architecture-decisions.md) | Record architecture decisions in ADRs     | Accepted |
-| [0002](./0002-nestjs-esm-with-swc-tests.md)     | NestJS on ESM, with SWC for tests and dev | Accepted |
+| ADR                                                  | Title                                                   | Status   |
+| ---------------------------------------------------- | ------------------------------------------------------- | -------- |
+| [0001](./0001-record-architecture-decisions.md)      | Record architecture decisions in ADRs                   | Accepted |
+| [0002](./0002-nestjs-esm-with-swc-tests.md)          | NestJS on ESM, with SWC for tests and dev               | Accepted |
+| [0003](./0003-vision-provider-and-lesson-parsing.md) | VisionProvider abstraction and defensive lesson parsing | Accepted |

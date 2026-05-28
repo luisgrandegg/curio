@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { AuthModule } from "./auth/auth.module.js";
 import { HealthModule } from "./health/health.module.js";
+import { LessonsModule } from "./lessons/lessons.module.js";
 
 @Module({
   imports: [
@@ -9,6 +10,7 @@ import { HealthModule } from "./health/health.module.js";
     ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
     HealthModule,
+    LessonsModule,
   ],
 })
 export class AppModule {}
