@@ -19,7 +19,12 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       include: ["src/**/*.ts"],
-      exclude: ["src/**/*.test.ts", "src/main.ts"],
+      exclude: [
+        "src/**/*.test.ts",
+        "src/main.ts",
+        // Thin SDK glue (the only @google/genai call); covered manually.
+        "src/lessons/vision/gemini-client.ts",
+      ],
       thresholds: { lines: 70, functions: 70, branches: 70, statements: 70 },
     },
   },
