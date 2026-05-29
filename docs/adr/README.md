@@ -34,3 +34,4 @@ mark the old one `Superseded by ADR-NNNN`.
 | [0009](./0009-agent-cascaded-pipeline-provider-factory.md) | Agent — cascaded STT→LLM→TTS via a provider factory     | Accepted |
 | [0010](./0010-quiz-data-channel-protocol.md)               | Quiz updates over a typed LiveKit data channel          | Accepted |
 | [0011](./0011-quiz-state-pure-reducers.md)                 | Quiz UI state as pure reducers over the data channel    | Accepted |
+| [0012](./0012-agent-state-kid-labels.md)                   | Normalize agent state to a kid-facing label set         | Accepted |
