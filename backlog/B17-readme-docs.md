@@ -1,6 +1,6 @@
 # B17 — README + docs
 
-**MVP step:** 19 · **Depends on:** most items · **Status:** ☐
+**MVP step:** 19 · **Depends on:** most items · **Status:** ☑ Done
 
 ## Goal
 

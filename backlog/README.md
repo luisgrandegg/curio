@@ -31,7 +31,7 @@ Every item must also pass the Constitution's product decision tests
 | B14 | [Child-safety pass](./B14-child-safety-pass.md)                 | B08           | ☑      |
 | B15 | [Accessibility pass](./B15-accessibility-pass.md)               | B13           | ☑      |
 | B16 | [Error states + polish](./B16-error-states-polish.md)           | B09, B10, B11 | ☑      |
-| B17 | [README + docs](./B17-readme-docs.md)                           | most          | ☐      |
+| B17 | [README + docs](./B17-readme-docs.md)                           | most          | ☑      |
 | B18 | [Deployment prep](./B18-deployment-prep.md)                     | B17           | ☐      |
 
 ⭐ = load-bearing checkpoint. Get it solid before building on it.
