@@ -11,6 +11,15 @@ Everything in the repo needed for the Vercel (web) + Koyeb (api + agent)
 free-tier deployment, with the two non-negotiables satisfied: the agent is
 always-on, and all surfaces are HTTPS (camera/mic requirement).
 
+## Progress (incremental)
+
+- ☑ **API image** — `apps/api/Dockerfile` + `.dockerignore` + ADR-0004 landed
+  early (build/start commands verified; container build pending operator, no
+  Docker daemon in dev sandbox).
+- ☐ **web image / Vercel config** — folded into B05 (real Next.js app).
+- ☐ **agent image** (always-on worker) — folded into B07 (real LiveKit worker).
+- ☐ **Tie-together** — operator runbook + CORS origin wiring once all three exist.
+
 ## Scope
 
 - `apps/api/Dockerfile` — Node 20, pnpm, builds only `api`, EXPOSE 3001,

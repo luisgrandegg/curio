@@ -26,3 +26,4 @@ mark the old one `Superseded by ADR-NNNN`.
 | [0001](./0001-record-architecture-decisions.md)      | Record architecture decisions in ADRs                   | Accepted |
 | [0002](./0002-nestjs-esm-with-swc-tests.md)          | NestJS on ESM, with SWC for tests and dev               | Accepted |
 | [0003](./0003-vision-provider-and-lesson-parsing.md) | VisionProvider abstraction and defensive lesson parsing | Accepted |
+| [0004](./0004-api-containerization-koyeb.md)         | API containerization for Koyeb                          | Accepted |

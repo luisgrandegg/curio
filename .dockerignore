@@ -1,0 +1,14 @@
+# Keep the build context small and the install/build hermetic.
+**/node_modules
+**/dist
+**/.next
+**/.turbo
+**/coverage
+.git
+.github
+.husky
+.claude
+**/*.log
+**/.env
+**/.env.*
+!**/.env.example
