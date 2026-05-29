@@ -1,6 +1,6 @@
 # B16 — Error states + polish
 
-**MVP step:** 18 · **Depends on:** B09, B10, B11 · **Status:** ☐
+**MVP step:** 18 · **Depends on:** B09, B10, B11 · **Status:** ☑ Done
 
 ## Goal
 
@@ -36,3 +36,15 @@ white screens, no scary errors.
 - Unit: each error branch renders its friendly state; 10s agent-join timeout;
   reconnect banner toggling.
 - ≥ 70% coverage on error-handling logic.
+
+## Outcome (done)
+
+- Already handled before this item: unreadable photo / no concepts (`/`),
+  token/session-start failure (`/review`), garbled STT (Pip re-asks, prompt).
+- New `lib/quiz-status.ts` (`quizBanner(phase)`) + `QuizBanner` cover the `/quiz`
+  states: connecting, waiting, **Pip-didn't-join (10s) → retry**, reconnecting,
+  **mic-denied → retry**, failed → retry. Kind copy, `role=status/alert`.
+- `/quiz` derives the phase from `useConnectionState` + `useRemoteParticipants`
+  - a 10s timer + `onMediaDeviceFailure`/`onError`; Retry reloads.
+- ~99% web coverage on the mapping + banner; page/LiveKit glue excluded.
+- Refresh mid-quiz loses the session (acceptable; documented for README B17).

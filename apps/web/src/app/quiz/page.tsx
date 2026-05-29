@@ -5,7 +5,10 @@ import {
   BarVisualizer,
   LiveKitRoom,
   RoomAudioRenderer,
+  useConnectionState,
+  useRemoteParticipants,
 } from "@livekit/components-react";
+import { ConnectionState } from "livekit-client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type {
@@ -14,6 +17,7 @@ import type {
   LessonResponse,
 } from "@curio/types";
 import { AudioControls } from "../../components/AudioControls";
+import { QuizBanner } from "../../components/QuizBanner";
 import { QuizLayout } from "../../components/QuizLayout";
 import { ReadAloud } from "../../components/ReadAloud";
 import { ScorecardPanel } from "../../components/ScorecardPanel";
@@ -26,26 +30,54 @@ import { useScorecard } from "../../hooks/useScorecard";
 import { useTranscript } from "../../hooks/useTranscript";
 import { endSession } from "../../lib/api-client";
 import { loadLesson } from "../../lib/lesson-store";
+import { type QuizPhase, quizBanner } from "../../lib/quiz-status";
 import { clearSession, loadSession } from "../../lib/session-store";
+
+type Fault = "mic" | "error" | null;
 
 // Rendered inside <LiveKitRoom> so the hooks can read the room context.
 function QuizRoom({
   concepts,
   onEnd,
-  error,
+  fault,
 }: {
   concepts: LessonConcept[];
   onEnd: () => void;
-  error: string | null;
+  fault: Fault;
 }) {
   const entries = useTranscript();
   const { scorecard, answered, summary } = useScorecard(concepts);
   const { state, audioTrack } = useAgentState();
   const { settings } = useA11ySettings();
+  const connection = useConnectionState();
+  const remotes = useRemoteParticipants();
+  const [graceElapsed, setGraceElapsed] = useState(false);
   const totalQuestions = Math.min(8, concepts.length + 2);
 
+  useEffect(() => {
+    // Pip should join within ~10s; otherwise offer a retry.
+    const timer = setTimeout(() => setGraceElapsed(true), 10_000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const phase: QuizPhase =
+    fault === "mic"
+      ? "mic-denied"
+      : fault === "error"
+        ? "failed"
+        : connection === ConnectionState.Reconnecting
+          ? "reconnecting"
+          : connection !== ConnectionState.Connected
+            ? "connecting"
+            : remotes.length > 0
+              ? "live"
+              : graceElapsed
+                ? "no-pip"
+                : "waiting";
+  const banner = quizBanner(phase);
+
   return (
-    <>
+    <div className="flex h-screen flex-col">
       <RoomAudioRenderer />
       {summary ? (
         <StudySummaryModal
@@ -61,33 +93,35 @@ function QuizRoom({
           }
         />
       ) : null}
-      <QuizLayout
-        avatar={
-          <TutorAvatarPanel
-            state={state}
-            bars={<BarVisualizer trackRef={audioTrack} barCount={5} />}
+      {banner ? (
+        <div className="p-3">
+          <QuizBanner
+            banner={banner}
+            onRetry={() => window.location.reload()}
           />
-        }
-        center={
-          error ? (
-            <p role="alert" className="text-xl text-rose-700">
-              {error}
-            </p>
-          ) : (
-            <TranscriptPanel entries={entries} />
-          )
-        }
-        scorecard={
-          <ScorecardPanel
-            concepts={concepts}
-            scorecard={scorecard}
-            questionNumber={answered}
-            totalQuestions={totalQuestions}
-          />
-        }
-        controls={<AudioControls onEnd={onEnd} />}
-      />
-    </>
+        </div>
+      ) : null}
+      <div className="flex-1">
+        <QuizLayout
+          avatar={
+            <TutorAvatarPanel
+              state={state}
+              bars={<BarVisualizer trackRef={audioTrack} barCount={5} />}
+            />
+          }
+          center={<TranscriptPanel entries={entries} />}
+          scorecard={
+            <ScorecardPanel
+              concepts={concepts}
+              scorecard={scorecard}
+              questionNumber={answered}
+              totalQuestions={totalQuestions}
+            />
+          }
+          controls={<AudioControls onEnd={onEnd} />}
+        />
+      </div>
+    </div>
   );
 }
 
@@ -95,7 +129,7 @@ export default function QuizPage() {
   const router = useRouter();
   const [session, setSession] = useState<CreateSessionResponse | null>(null);
   const [lesson, setLesson] = useState<LessonResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [fault, setFault] = useState<Fault>(null);
 
   useEffect(() => {
     const storedSession = loadSession();
@@ -127,11 +161,10 @@ export default function QuizPage() {
       connect
       audio
       video={false}
-      onError={() =>
-        setError("Pip is taking a nap — check your microphone and try again.")
-      }
+      onMediaDeviceFailure={() => setFault("mic")}
+      onError={() => setFault("error")}
     >
-      <QuizRoom concepts={lesson.concepts} onEnd={end} error={error} />
+      <QuizRoom concepts={lesson.concepts} onEnd={end} fault={fault} />
     </LiveKitRoom>
   );
 }
