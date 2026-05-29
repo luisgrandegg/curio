@@ -22,8 +22,10 @@ export default defineConfig({
       exclude: [
         "src/**/*.test.ts",
         "src/main.ts",
-        // Thin SDK glue (the only @google/genai call); covered manually.
+        // Thin SDK/HTTP glue (the only @google/genai and Cartesia calls);
+        // covered manually / by the operator.
         "src/lessons/vision/gemini-client.ts",
+        "src/tts/cartesia-client.ts",
       ],
       thresholds: { lines: 70, functions: 70, branches: 70, statements: 70 },
     },
