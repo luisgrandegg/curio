@@ -1,6 +1,6 @@
 # B07 — Agent base + providers ⭐
 
-**MVP step:** 8 · **Depends on:** B04 · **Status:** ☐
+**MVP step:** 8 · **Depends on:** B04 · **Status:** ☑ Done
 
 > Load-bearing checkpoint: first audio from Pip. Validating the provider
 > pipeline and that audio reaches `/quiz` is the whole point of this step.
@@ -36,3 +36,18 @@ providers from a config-driven factory.
 - Unit: `createProviders` for each provider branch + exhaustive default;
   env-driven defaults. Mock LiveKit plugin constructors.
 - ≥ 70% coverage on the factory. `// TEST:` for live-audio e2e.
+
+## Outcome (done)
+
+- `apps/agent` is now a real `@livekit/agents` v1.4 worker (plain ESM).
+  `providers/{types,config,factory}.ts` + README; `main.ts` connects, builds the
+  bundle, loads Silero VAD, starts an `AgentSession`, and `say`s a fixed greeting.
+- `parseProviderConfig(env)` defaults to Deepgram + Gemini + Cartesia and
+  rejects unsupported providers; `createProviders` switches per axis with an
+  `assertNever` exhaustive default (the only `@livekit/agents-plugin-*` imports).
+  Decision recorded in **ADR-0009** (cascaded pipeline, not Realtime).
+- 6 tests, **100%** coverage on `config` + `factory` (plugins mocked);
+  `main.ts` excluded. Typechecks against the real SDK; `tsc` build emits dist.
+- **Operator-verified step:** running the worker (audio reaching `/quiz`) needs
+  LiveKit + Deepgram/Cartesia/Gemini keys — can't run in CI. Flagged in the PR.
+  SDK is stable v1.4, so low drift risk, but surface any API change on first run.

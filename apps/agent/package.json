@@ -4,15 +4,26 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "echo \"[agent] dev placeholder — LiveKit worker lands in B07\"",
+    "dev": "node --import @swc-node/register/esm-register src/main.ts dev",
+    "start": "node dist/main.js start",
     "build": "tsc -p tsconfig.build.json",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run --coverage"
   },
+  "dependencies": {
+    "@livekit/agents": "1.4.4",
+    "@livekit/agents-plugin-cartesia": "1.4.4",
+    "@livekit/agents-plugin-deepgram": "1.4.4",
+    "@livekit/agents-plugin-google": "1.4.4",
+    "@livekit/agents-plugin-silero": "1.4.4",
+    "dotenv": "17.4.2"
+  },
   "devDependencies": {
     "@curio/config": "workspace:*",
     "@curio/types": "workspace:*",
+    "@swc-node/register": "1.11.1",
+    "@swc/core": "1.15.40",
     "@types/node": "20.19.41",
     "@vitest/coverage-v8": "4.1.7",
     "eslint": "9.39.4",
