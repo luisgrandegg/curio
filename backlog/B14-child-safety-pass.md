@@ -1,6 +1,6 @@
 # B14 — Child-safety pass
 
-**MVP step:** 16 · **Depends on:** B08 · **Status:** ☐
+**MVP step:** 16 · **Depends on:** B08 · **Status:** ☑ Done
 
 > Acceptance criteria, not optional. This is the domain care that defines Curio.
 
@@ -39,3 +39,17 @@ Verify and harden Pip's child-safety behaviour against the MVP and
   enforced in agent logic; PII never echoed in published messages.
 - ≥ 70% coverage on safety-relevant agent logic. `// TEST:` for scripted
   spoken-scenario evals.
+
+## Outcome (done)
+
+- Reviewed `buildPipPrompt` against the full MVP child-safety checklist — every
+  guardrail was already present (faithful B08 build); no prompt change needed.
+- `prompt.safety.test.ts` locks all 13 guardrails as a regression guard (scope
+  lock, never wrong/no/incorrect, one-hint, give-answer→needs_review, praise
+  effort, no-PII ask + repeat, negative-self-talk redirect, let-them-stop,
+  skip-unsuitable, no medical/legal advice, recordAnswer-before-feedback, one
+  question at a time) + age woven in + `maxQuestionsFor` never exceeds 8.
+- `docs/child-safety-checklist.md` — the manual spoken-scenario eval (the
+  `// TEST:`), to be walked on a live quiz before release.
+- Verdict honesty (kind speech, true scorecard) reaffirmed.
+- `// PROD:` automated spoken-scenario evals + a hard server-side question cap.

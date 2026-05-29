@@ -12,6 +12,7 @@ import { parseProviderConfig } from "./providers/config.js";
 import { createProviders } from "./providers/factory.js";
 import { buildPipPrompt } from "./prompt.js";
 import { createQuizTools } from "./quiz/tools.js";
+import { createQuizTracker } from "./quiz/tracker.js";
 import { installLlmFallback } from "./resilience.js";
 import { fetchSession } from "./session-client.js";
 
@@ -33,11 +34,12 @@ export default defineAgent({
     const { stt, llm, tts } = createProviders(parseProviderConfig(process.env));
     const vad = await silero.VAD.load();
 
+    const tracker = createQuizTracker(lesson.concepts);
     const session = new voice.AgentSession({ stt, llm, tts, vad });
     await session.start({
       agent: new voice.Agent({
         instructions: buildPipPrompt(lesson),
-        tools: createQuizTools(publisher),
+        tools: createQuizTools(publisher, tracker),
       }),
       room: ctx.room,
     });

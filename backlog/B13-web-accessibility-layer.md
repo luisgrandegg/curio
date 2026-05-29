@@ -1,6 +1,6 @@
 # B13 — Web accessibility layer
 
-**MVP step:** 15 · **Depends on:** B05, B12 · **Status:** ☐
+**MVP step:** 15 · **Depends on:** B05, B12 · **Status:** ☑ Done
 
 ## Goal
 
@@ -37,3 +37,17 @@ panel — the first-class accessibility layer.
 - Unit: `useReadAloud` timestamp→highlight index logic; `useA11ySettings`
   reducer; `ReadAloudText` span rendering; theme/font class mapping.
 - ≥ 70% coverage on the highlight logic and settings reducer.
+
+## Outcome (done)
+
+- `A11ySettingsProvider` + gear `SettingsPanel`: font (Lexend/OpenDyslexic),
+  size (3), theme (cream/high-contrast/tinted), Pip speed, highlight toggle —
+  presentation-only via `settingsToClassName` + CSS vars (only Pip speed maps to
+  the TTS `speed`). Settings in React state (`// PROD:` persist). ADR-0015.
+- Read-aloud: pure `wordIndexAt` + api-client `readAloud`; `useReadAloud`
+  (Audio + `timeupdate`) + `ReadAloud` composition (browser glue, excluded);
+  presentational `ReadAloudText` (karaoke highlight) + `ReadAloudButton`.
+- Wired onto the lesson summary, each concept (`ConceptList` actions slot), and
+  the study-summary modal. Lexend + OpenDyslexic load at runtime via `<link>`.
+- ~99% web coverage on lib + presentational components; hooks/composition
+  excluded (audio verified manually). Full gate green.

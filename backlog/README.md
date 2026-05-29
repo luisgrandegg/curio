@@ -25,11 +25,11 @@ Every item must also pass the Constitution's product decision tests
 | B08 | [Agent tutor prompt + tools](./B08-agent-prompt-tools.md)       | B07           | ☑      |
 | B09 | [Web transcript + scorecard](./B09-web-transcript-scorecard.md) | B06, B08      | ☑      |
 | B10 | [Web agent-state avatar](./B10-web-agent-state-avatar.md)       | B06, B08      | ☑      |
-| B11 | [Study summary (agent + modal)](./B11-study-summary.md)         | B08, B09      | ☐      |
-| B12 | [Read-aloud endpoint](./B12-api-read-aloud.md)                  | B02           | ☐      |
-| B13 | [Web accessibility layer](./B13-web-accessibility-layer.md)     | B05, B12      | ☐      |
-| B14 | [Child-safety pass](./B14-child-safety-pass.md)                 | B08           | ☐      |
-| B15 | [Accessibility pass](./B15-accessibility-pass.md)               | B13           | ☐      |
+| B11 | [Study summary (agent + modal)](./B11-study-summary.md)         | B08, B09      | ☑      |
+| B12 | [Read-aloud endpoint](./B12-api-read-aloud.md)                  | B02           | ☑      |
+| B13 | [Web accessibility layer](./B13-web-accessibility-layer.md)     | B05, B12      | ☑      |
+| B14 | [Child-safety pass](./B14-child-safety-pass.md)                 | B08           | ☑      |
+| B15 | [Accessibility pass](./B15-accessibility-pass.md)               | B13           | ☑      |
 | B16 | [Error states + polish](./B16-error-states-polish.md)           | B09, B10, B11 | ☐      |
 | B17 | [README + docs](./B17-readme-docs.md)                           | most          | ☐      |
 | B18 | [Deployment prep](./B18-deployment-prep.md)                     | B17           | ☐      |

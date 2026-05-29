@@ -9,6 +9,8 @@ import { LessonsController } from "./lessons/lessons.controller.js";
 import { VISION_PROVIDER } from "./lessons/vision/vision-provider.interface.js";
 import { SessionsController } from "./sessions/sessions.controller.js";
 import { TOKEN_MINTER } from "./sessions/livekit/token-minter.interface.js";
+import { TtsController } from "./tts/tts.controller.js";
+import { TTS_PROVIDER } from "./tts/tts-provider.interface.js";
 
 const fakeLesson: Lesson = {
   topicTitle: "Adding",
@@ -39,6 +41,15 @@ describe("AppModule", () => {
         mint: () =>
           Promise.resolve({ token: "test.jwt.token", url: "wss://lk" }),
       })
+      .overrideProvider(TTS_PROVIDER)
+      .useValue({
+        synthesize: (text: string) =>
+          Promise.resolve({
+            audioBase64: "QUJD",
+            mimeType: "audio/wav",
+            words: [{ word: text, start: 0, end: 1 }],
+          }),
+      })
       .compile();
 
     expect(moduleRef.get(HealthController).check()).toEqual({ ok: true });
@@ -68,5 +79,11 @@ describe("AppModule", () => {
     expect(state.lesson.id).toBe(lesson.id);
     expect(state.scorecard).toHaveLength(5);
     expect(sessions.end(created.sessionId).status).toBe("ended");
+
+    const readAloud = await moduleRef
+      .get(TtsController)
+      .readAloud({ text: "Two plus two" });
+    expect(readAloud.audioBase64.length).toBeGreaterThan(0);
+    expect(readAloud.words[0]?.word).toBe("Two plus two");
   });
 });

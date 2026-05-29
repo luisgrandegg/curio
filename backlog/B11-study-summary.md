@@ -1,6 +1,6 @@
 # B11 — Study summary (agent + modal)
 
-**MVP steps:** 12, 13 · **Depends on:** B08, B09 · **Status:** ☐
+**MVP steps:** 12, 13 · **Depends on:** B08, B09 · **Status:** ☑ Done
 
 ## Goal
 
@@ -32,3 +32,17 @@ modal at the end of the quiz.
 - Unit: summary builder from session state; modal render from a `StudySummary`;
   copy-to-clipboard; focus trap.
 - ≥ 70% coverage on summary builder + modal logic.
+
+## Outcome (done)
+
+- Agent: `quiz/summary.ts` (`buildStudySummary`, kind encouragement in every
+  branch) + `quiz/tracker.ts` (`createQuizTracker`) + `generateStudySummary`
+  tool — reads the tracker, publishes a `summary` `QuizMessage`, returns
+  `{ generated: true }`; `updateScorecard` updates the tracker. The agent owns
+  the tally (ADR-0013).
+- Web: `StudySummaryModal` — labelled `role="dialog"` with focus-on-open, the
+  "what you did great" / "let's practise next time" lists, and a parent-facing
+  Copy summary; shown on `/quiz` when `useScorecard` yields a `summary`.
+- Tests: agent 100% (summary branches, tracker, tool); web modal (dialog/focus,
+  copy, done). Full gate green. `// PROD:` persist summary on `/sessions/:id/end`.
+- **Closes the core loop:** capture → review → spoken quiz → recap.

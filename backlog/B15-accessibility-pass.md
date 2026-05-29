@@ -1,6 +1,6 @@
 # B15 — Accessibility pass
 
-**MVP step:** 17 · **Depends on:** B13 · **Status:** ☐
+**MVP step:** 17 · **Depends on:** B13 · **Status:** ☑ Done
 
 > Acceptance criteria, not optional.
 
@@ -37,3 +37,16 @@ redundant-multimodality principle.
 - Unit/integration: focus-order and aria-attribute assertions on key
   components; reduced-motion gating; non-colour status indicators present.
 - ≥ 70% coverage on accessibility-bearing component logic.
+
+## Outcome (done)
+
+- Audited the flow against the MVP accessibility baseline — most was already in
+  place (icon+label+colour scorecard, `aria-live` transcript/avatar, real
+  labelled buttons, `motion-safe:` animations). One gap fixed: a **global
+  `:focus-visible`** outline (clear keyboard focus on custom ring buttons), plus
+  a `prefers-reduced-motion` media-query safety net.
+- `components/accessibility.test.tsx` locks the cross-cutting guarantees:
+  motion gated behind `motion-safe`, `aria-live` regions, accessible control
+  names, colour-not-only status text.
+- `docs/accessibility-checklist.md` — the manual keyboard / screen-reader /
+  reduced-motion / typography walkthrough for release.
