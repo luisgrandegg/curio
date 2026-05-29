@@ -4,11 +4,15 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { LessonResponse } from "@curio/types";
 import { ConceptList } from "../../components/ConceptList";
+import { createSession } from "../../lib/api-client";
 import { loadLesson } from "../../lib/lesson-store";
+import { saveSession } from "../../lib/session-store";
 
 export default function ReviewPage() {
   const router = useRouter();
   const [lesson, setLesson] = useState<LessonResponse | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const stored = loadLesson();
@@ -21,6 +25,20 @@ export default function ReviewPage() {
 
   if (!lesson) return null;
 
+  const startQuiz = async (): Promise<void> => {
+    setBusy(true);
+    setError(null);
+    try {
+      const session = await createSession(lesson.id);
+      saveSession(session);
+      router.push("/quiz");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <main className="mx-auto flex max-w-2xl flex-col gap-6 p-6">
       <header className="flex flex-col gap-2">
@@ -30,12 +48,19 @@ export default function ReviewPage() {
 
       <ConceptList concepts={lesson.concepts} />
 
-      {/* B06 wires this to POST /sessions and navigates to /quiz. */}
+      {error ? (
+        <p role="alert" className="text-lg text-rose-700">
+          {error}
+        </p>
+      ) : null}
+
       <button
         type="button"
-        className="rounded-2xl bg-emerald-600 px-6 py-4 text-xl font-bold text-white"
+        disabled={busy}
+        onClick={startQuiz}
+        className="rounded-2xl bg-emerald-600 px-6 py-4 text-xl font-bold text-white disabled:opacity-40"
       >
-        Start quiz with Pip
+        {busy ? "Getting Pip ready…" : "Start quiz with Pip"}
       </button>
     </main>
   );

@@ -1,4 +1,9 @@
-import type { ChildAge, LessonResponse, Subject } from "@curio/types";
+import type {
+  ChildAge,
+  CreateSessionResponse,
+  LessonResponse,
+  Subject,
+} from "@curio/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
@@ -27,4 +32,26 @@ export async function createLesson(
   });
   if (!res.ok) throw new Error(UNREADABLE_MESSAGE);
   return (await res.json()) as LessonResponse;
+}
+
+/** Friendly message when a quiz session can't be started. */
+export const SESSION_START_MESSAGE =
+  "We couldn't start the quiz just now — let's try again.";
+
+/** Create a quiz session for a lesson and get LiveKit connection details. */
+export async function createSession(
+  lessonId: string,
+): Promise<CreateSessionResponse> {
+  const res = await fetch(`${API_URL}/sessions`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ lessonId }),
+  });
+  if (!res.ok) throw new Error(SESSION_START_MESSAGE);
+  return (await res.json()) as CreateSessionResponse;
+}
+
+/** Finalize a quiz session. Best-effort; never blocks leaving the screen. */
+export async function endSession(sessionId: string): Promise<void> {
+  await fetch(`${API_URL}/sessions/${sessionId}/end`, { method: "POST" });
 }

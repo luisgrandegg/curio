@@ -30,3 +30,4 @@ mark the old one `Superseded by ADR-NNNN`.
 | [0005](./0005-self-host-vps-instead-of-koyeb.md)     | Self-host api + agent on one VPS, instead of Koyeb      | Accepted |
 | [0006](./0006-livekit-token-minter-boundary.md)      | LiveKit token minting behind a TokenMinter boundary     | Accepted |
 | [0007](./0007-web-nextjs-build-and-versions.md)      | Web app build setup, and "latest stable" versions       | Accepted |
+| [0008](./0008-livekit-web-connection.md)             | LiveKit on the web — declarative room at the page level | Accepted |
