@@ -10,30 +10,39 @@ import * as silero from "@livekit/agents-plugin-silero";
 import { config as loadEnv } from "dotenv";
 import { parseProviderConfig } from "./providers/config.js";
 import { createProviders } from "./providers/factory.js";
+import { buildPipPrompt } from "./prompt.js";
+import { createQuizTools } from "./quiz/tools.js";
+import { fetchSession } from "./session-client.js";
 
 loadEnv();
-
-// B08 replaces this fixed greeting + placeholder instructions with the full
-// Pip prompt (lesson concepts injected) and the quiz tools.
-const GREETING =
-  "Hi there! I'm Pip. We're going to play a quick question game about what " +
-  "you learned today. Ready when you are!";
 
 export default defineAgent({
   entry: async (ctx: JobContext): Promise<void> => {
     await ctx.connect();
+
+    // Room name is the sessionId — read the lesson the child is studying.
+    const sessionId = ctx.room.name;
+    if (!sessionId) throw new Error("Room has no name (sessionId)");
+    const { lesson } = await fetchSession(sessionId);
+
+    const publisher = ctx.room.localParticipant;
+    if (!publisher)
+      throw new Error("Room has no local participant to publish on");
+
     const { stt, llm, tts } = createProviders(parseProviderConfig(process.env));
     const vad = await silero.VAD.load();
 
     const session = new voice.AgentSession({ stt, llm, tts, vad });
     await session.start({
       agent: new voice.Agent({
-        instructions: "You are Pip, a warm, patient study buddy for a child.",
+        instructions: buildPipPrompt(lesson),
+        tools: createQuizTools(publisher),
       }),
       room: ctx.room,
     });
 
-    await session.say(GREETING);
+    // Pip opens with a warm greeting + first question, per its instructions.
+    await session.generateReply();
   },
 });
 

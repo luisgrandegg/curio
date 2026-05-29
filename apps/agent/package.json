@@ -12,16 +12,17 @@
     "test": "vitest run --coverage"
   },
   "dependencies": {
+    "@curio/types": "workspace:*",
     "@livekit/agents": "1.4.4",
     "@livekit/agents-plugin-cartesia": "1.4.4",
     "@livekit/agents-plugin-deepgram": "1.4.4",
     "@livekit/agents-plugin-google": "1.4.4",
     "@livekit/agents-plugin-silero": "1.4.4",
-    "dotenv": "17.4.2"
+    "dotenv": "17.4.2",
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@curio/config": "workspace:*",
-    "@curio/types": "workspace:*",
     "@swc-node/register": "1.11.1",
     "@swc/core": "1.15.40",
     "@types/node": "20.19.41",

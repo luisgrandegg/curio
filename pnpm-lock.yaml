@@ -26,6 +26,9 @@ importers:
 
   apps/agent:
     dependencies:
+      '@curio/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@livekit/agents':
         specifier: 1.4.4
         version: 1.4.4(@livekit/rtc-node@0.13.29)(typescript@5.9.3)(zod@4.4.3)
@@ -44,13 +47,13 @@ importers:
       dotenv:
         specifier: 17.4.2
         version: 17.4.2
+      zod:
+        specifier: 4.4.3
+        version: 4.4.3
     devDependencies:
       '@curio/config':
         specifier: workspace:*
         version: link:../../packages/config
-      '@curio/types':
-        specifier: workspace:*
-        version: link:../../packages/types
       '@swc-node/register':
         specifier: 1.11.1
         version: 1.11.1(@swc/core@1.15.40)(@swc/types@0.1.26)(typescript@5.9.3)

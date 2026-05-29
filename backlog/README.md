@@ -22,7 +22,7 @@ Every item must also pass the Constitution's product decision tests
 | B05 | [Web base + capture + review](./B05-web-base-capture-review.md) | B01, B03      | ☑      |
 | B06 | [Web LiveKit connect](./B06-web-livekit-connect.md)             | B04, B05      | ☑      |
 | B07 | [Agent base + providers](./B07-agent-base-providers.md) ⭐      | B04           | ☑      |
-| B08 | [Agent tutor prompt + tools](./B08-agent-prompt-tools.md)       | B07           | ☐      |
+| B08 | [Agent tutor prompt + tools](./B08-agent-prompt-tools.md)       | B07           | ☑      |
 | B09 | [Web transcript + scorecard](./B09-web-transcript-scorecard.md) | B06, B08      | ☐      |
 | B10 | [Web agent-state avatar](./B10-web-agent-state-avatar.md)       | B06, B08      | ☐      |
 | B11 | [Study summary (agent + modal)](./B11-study-summary.md)         | B08, B09      | ☐      |
