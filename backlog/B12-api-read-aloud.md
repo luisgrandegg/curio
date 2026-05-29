@@ -1,6 +1,6 @@
 # B12 — Read-aloud endpoint
 
-**MVP step:** 14 · **Depends on:** B02 · **Status:** ☐
+**MVP step:** 14 · **Depends on:** B02 · **Status:** ☑ Done
 
 ## Goal
 
@@ -32,3 +32,16 @@ non-LiveKit/REST context.
 - Unit: request validation; provider invoked with `speed`; response shape
   (audio + timestamps). Mock the TTS provider.
 - ≥ 70% coverage on the controller/service. `// TEST:` for live Cartesia.
+
+## Outcome (done)
+
+- `TtsProvider` interface + env factory (default Cartesia), Nest-token injected
+  — mirroring the vision/token boundaries (ADR-0014). `CartesiaTtsProvider`
+  depends on a `CartesiaSynthesize` fn; the only Cartesia call is the SSE
+  `cartesia-client.ts` (`add_timestamps`, `// TEST:`, coverage-excluded).
+- `POST /tts/read-aloud` (validated `ReadAloudDto`: text 1–2000, speed 0.6–2.0)
+  → `{ audioBase64, mimeType, words }`, default speed from `TTS_DEFAULT_SPEED`.
+- Tests: provider passthrough, factory (default/unknown), DTO validation,
+  controller (requested vs default speed), AppModule integration with the
+  provider overridden — **98.7%** coverage. Live Cartesia is operator-verified.
+- `// PROD:` cache by text hash, rate-limit, length cap.
