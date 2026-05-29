@@ -26,7 +26,14 @@ function createStt(cfg: ProviderConfig["stt"]): ProviderBundle["stt"] {
 function createLlm(cfg: ProviderConfig["llm"]): ProviderBundle["llm"] {
   switch (cfg.provider) {
     case "google":
-      return new google.LLM({ model: cfg.model });
+      // thinkingBudget: 0 disables Gemini 2.5 "thinking". With thinking on, its
+      // chain-of-thought and Python-style `tool_code` calls leaked into Pip's
+      // spoken/transcribed replies. Pip's reasoning is shallow (grade an answer,
+      // pick a tool), so we trade negligible reasoning for clean speech + lower latency.
+      return new google.LLM({
+        model: cfg.model,
+        thinkingConfig: { thinkingBudget: 0 },
+      });
     default:
       return assertNever(cfg.provider, "LLM");
   }

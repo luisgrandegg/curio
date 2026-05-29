@@ -13,6 +13,7 @@ import { createProviders } from "./providers/factory.js";
 import { buildPipPrompt } from "./prompt.js";
 import { createQuizTools } from "./quiz/tools.js";
 import { createQuizTracker } from "./quiz/tracker.js";
+import { installLlmFallback } from "./resilience.js";
 import { fetchSession } from "./session-client.js";
 
 loadEnv();
@@ -42,6 +43,10 @@ export default defineAgent({
       }),
       room: ctx.room,
     });
+
+    // If the LLM goes down mid-quiz (e.g. provider rate limit), Pip speaks a
+    // warm fallback instead of leaving the child in silence.
+    installLlmFallback(session, (text) => session.say(text));
 
     // Pip opens with a warm greeting + first question, per its instructions.
     await session.generateReply();

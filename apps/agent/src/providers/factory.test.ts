@@ -41,7 +41,11 @@ describe("createProviders", () => {
     expect(nameOf(bundle.tts)).toBe("TTS");
 
     expect(optsOf(bundle.stt)).toEqual({ model: "nova-3" });
-    expect(optsOf(bundle.llm)).toEqual({ model: "gemini-2.5-flash" });
+    // Gemini thinking is disabled to stop thought/tool_code leakage into speech.
+    expect(optsOf(bundle.llm)).toEqual({
+      model: "gemini-2.5-flash",
+      thinkingConfig: { thinkingBudget: 0 },
+    });
     expect(optsOf(bundle.tts)).toEqual({ voice: "warm" });
   });
 
