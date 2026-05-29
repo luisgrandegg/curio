@@ -28,3 +28,4 @@ mark the old one `Superseded by ADR-NNNN`.
 | [0003](./0003-vision-provider-and-lesson-parsing.md) | VisionProvider abstraction and defensive lesson parsing | Accepted |
 | [0004](./0004-api-containerization-koyeb.md)         | API containerization (Docker image)                     | Accepted |
 | [0005](./0005-self-host-vps-instead-of-koyeb.md)     | Self-host api + agent on one VPS, instead of Koyeb      | Accepted |
+| [0006](./0006-livekit-token-minter-boundary.md)      | LiveKit token minting behind a TokenMinter boundary     | Accepted |

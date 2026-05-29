@@ -7,6 +7,8 @@ import { AuthController } from "./auth/auth.controller.js";
 import { HealthController } from "./health/health.controller.js";
 import { LessonsController } from "./lessons/lessons.controller.js";
 import { VISION_PROVIDER } from "./lessons/vision/vision-provider.interface.js";
+import { SessionsController } from "./sessions/sessions.controller.js";
+import { TOKEN_MINTER } from "./sessions/livekit/token-minter.interface.js";
 
 const fakeLesson: Lesson = {
   topicTitle: "Adding",
@@ -32,6 +34,11 @@ describe("AppModule", () => {
     })
       .overrideProvider(VISION_PROVIDER)
       .useValue({ extractLesson: () => Promise.resolve(fakeLesson) })
+      .overrideProvider(TOKEN_MINTER)
+      .useValue({
+        mint: () =>
+          Promise.resolve({ token: "test.jwt.token", url: "wss://lk" }),
+      })
       .compile();
 
     expect(moduleRef.get(HealthController).check()).toEqual({ ok: true });
@@ -50,5 +57,16 @@ describe("AppModule", () => {
       });
     expect(lesson.id).toBeTruthy();
     expect(lesson.concepts).toHaveLength(5);
+
+    // Start a session from that lesson, read it back, then end it.
+    const sessions = moduleRef.get(SessionsController);
+    const created = await sessions.create({ lessonId: lesson.id });
+    expect(created.roomName).toBe(created.sessionId);
+    expect(created.livekitToken.length).toBeGreaterThan(0);
+
+    const state = sessions.get(created.sessionId);
+    expect(state.lesson.id).toBe(lesson.id);
+    expect(state.scorecard).toHaveLength(5);
+    expect(sessions.end(created.sessionId).status).toBe("ended");
   });
 });
