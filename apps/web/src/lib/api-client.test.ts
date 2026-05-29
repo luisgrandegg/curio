@@ -1,4 +1,8 @@
-import type { CreateSessionResponse, LessonResponse } from "@curio/types";
+import type {
+  CreateSessionResponse,
+  LessonResponse,
+  ReadAloudResponse,
+} from "@curio/types";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   SESSION_START_MESSAGE,
@@ -6,6 +10,7 @@ import {
   createLesson,
   createSession,
   endSession,
+  readAloud,
 } from "./api-client";
 
 const lesson: LessonResponse = {
@@ -91,5 +96,44 @@ describe("endSession", () => {
     const [url, init] = fetchMock.mock.calls[0]!;
     expect(String(url)).toMatch(/\/sessions\/s1\/end$/);
     expect(init.method).toBe("POST");
+  });
+});
+
+const audio: ReadAloudResponse = {
+  audioBase64: "QUJD",
+  mimeType: "audio/wav",
+  words: [{ word: "Hi", start: 0, end: 0.4 }],
+};
+
+describe("readAloud", () => {
+  it("posts text + speed and returns audio with word timestamps", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue({ ok: true, json: () => Promise.resolve(audio) });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const result = await readAloud("Hi there", 1.1);
+
+    expect(result).toEqual(audio);
+    const [url, init] = fetchMock.mock.calls[0]!;
+    expect(String(url)).toMatch(/\/tts\/read-aloud$/);
+    expect(JSON.parse(init.body as string)).toEqual({
+      text: "Hi there",
+      speed: 1.1,
+    });
+  });
+
+  it("omits speed when not given and throws on failure", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue({ ok: true, json: () => Promise.resolve(audio) });
+    vi.stubGlobal("fetch", fetchMock);
+    await readAloud("Hi");
+    expect(JSON.parse(fetchMock.mock.calls[0]![1].body as string)).toEqual({
+      text: "Hi",
+    });
+
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false }));
+    await expect(readAloud("Hi")).rejects.toThrow(/Read-aloud/);
   });
 });

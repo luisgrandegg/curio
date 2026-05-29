@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { StudySummary } from "@curio/types";
 
 export interface StudySummaryModalProps {
   summary: StudySummary;
   onDone: () => void;
+  /** Optional read-aloud control for the encouragement (dyslexia support). */
+  readAloud?: ReactNode;
 }
 
 /** Parent-facing plain-text recap for the "Copy summary" button. */
@@ -19,7 +21,11 @@ export function summaryToText(s: StudySummary): string {
   ].join("\n");
 }
 
-export function StudySummaryModal({ summary, onDone }: StudySummaryModalProps) {
+export function StudySummaryModal({
+  summary,
+  onDone,
+  readAloud,
+}: StudySummaryModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
@@ -45,7 +51,10 @@ export function StudySummaryModal({ summary, onDone }: StudySummaryModalProps) {
         <h2 id="summary-title" className="text-3xl font-extrabold">
           Great work today! 🎉
         </h2>
-        <p className="text-lg text-slate-700">{summary.encouragement}</p>
+        <div className="flex items-center gap-2 text-lg text-slate-700">
+          {readAloud}
+          <p>{summary.encouragement}</p>
+        </div>
 
         <section>
           <h3 className="text-xl font-bold">What you did great</h3>
