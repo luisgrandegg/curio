@@ -3,7 +3,8 @@
 /*
  * Dyslexia-friendly defaults (MVP accessibility section): high-legibility
  * Lexend, warm cream background (not pure white), dark grey text (not pure
- * black), generous line-height. The full settings panel lands in B13.
+ * black), generous line-height. The settings panel (B13) overrides these on a
+ * wrapper via the classes below.
  */
 :root {
   --background: #faf7ef;
@@ -15,4 +16,42 @@ body {
   color: var(--foreground);
   font-family: "Lexend", system-ui, -apple-system, sans-serif;
   line-height: 1.6;
+}
+
+/* Accessibility settings wrapper (presentation-only). */
+.a11y-root {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.font-lexend {
+  font-family: "Lexend", system-ui, sans-serif;
+}
+.font-dyslexic {
+  font-family: "OpenDyslexic", "Lexend", system-ui, sans-serif;
+}
+
+.a11y-size-comfortable {
+  font-size: 1rem;
+}
+.a11y-size-large {
+  font-size: 1.15rem;
+}
+.a11y-size-xlarge {
+  font-size: 1.3rem;
+}
+
+/* High contrast, but not pure black on pure white (reduces visual stress). */
+.theme-cream {
+  --background: #faf7ef;
+  --foreground: #2b2b2b;
+}
+.theme-high-contrast {
+  --background: #fffdf5;
+  --foreground: #1a1a1a;
+}
+.theme-tinted {
+  --background: #eef3fb;
+  --foreground: #22303f;
 }

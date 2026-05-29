@@ -17,4 +17,14 @@ describe("ConceptList", () => {
     expect(screen.getByText("Carrying")).toBeInTheDocument();
     expect(screen.getByText("Move the extra ten over.")).toBeInTheDocument();
   });
+
+  it("renders the per-concept actions slot when provided", () => {
+    render(
+      <ConceptList
+        concepts={[{ id: "c1", label: "Adding", detail: "d" }]}
+        actions={(c) => <span>action-{c.id}</span>}
+      />,
+    );
+    expect(screen.getByText("action-c1")).toBeInTheDocument();
+  });
 });

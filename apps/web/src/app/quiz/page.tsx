@@ -15,10 +15,12 @@ import type {
 } from "@curio/types";
 import { AudioControls } from "../../components/AudioControls";
 import { QuizLayout } from "../../components/QuizLayout";
+import { ReadAloud } from "../../components/ReadAloud";
 import { ScorecardPanel } from "../../components/ScorecardPanel";
 import { StudySummaryModal } from "../../components/StudySummaryModal";
 import { TranscriptPanel } from "../../components/TranscriptPanel";
 import { TutorAvatarPanel } from "../../components/TutorAvatarPanel";
+import { useA11ySettings } from "../../hooks/useA11ySettings";
 import { useAgentState } from "../../hooks/useAgentState";
 import { useScorecard } from "../../hooks/useScorecard";
 import { useTranscript } from "../../hooks/useTranscript";
@@ -39,12 +41,26 @@ function QuizRoom({
   const entries = useTranscript();
   const { scorecard, answered, summary } = useScorecard(concepts);
   const { state, audioTrack } = useAgentState();
+  const { settings } = useA11ySettings();
   const totalQuestions = Math.min(8, concepts.length + 2);
 
   return (
     <>
       <RoomAudioRenderer />
-      {summary ? <StudySummaryModal summary={summary} onDone={onEnd} /> : null}
+      {summary ? (
+        <StudySummaryModal
+          summary={summary}
+          onDone={onEnd}
+          readAloud={
+            <ReadAloud
+              text={summary.encouragement}
+              speed={settings.pipSpeed}
+              highlight={false}
+              label="the summary"
+            />
+          }
+        />
+      ) : null}
       <QuizLayout
         avatar={
           <TutorAvatarPanel

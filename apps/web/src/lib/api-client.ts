@@ -2,6 +2,7 @@ import type {
   ChildAge,
   CreateSessionResponse,
   LessonResponse,
+  ReadAloudResponse,
   Subject,
 } from "@curio/types";
 
@@ -49,6 +50,20 @@ export async function createSession(
   });
   if (!res.ok) throw new Error(SESSION_START_MESSAGE);
   return (await res.json()) as CreateSessionResponse;
+}
+
+/** Synthesize speech for read-aloud, with word timestamps for highlighting. */
+export async function readAloud(
+  text: string,
+  speed?: number,
+): Promise<ReadAloudResponse> {
+  const res = await fetch(`${API_URL}/tts/read-aloud`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(speed === undefined ? { text } : { text, speed }),
+  });
+  if (!res.ok) throw new Error("Read-aloud isn't available right now.");
+  return (await res.json()) as ReadAloudResponse;
 }
 
 /** Finalize a quiz session. Best-effort; never blocks leaving the screen. */
