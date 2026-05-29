@@ -16,6 +16,7 @@ import type {
 import { AudioControls } from "../../components/AudioControls";
 import { QuizLayout } from "../../components/QuizLayout";
 import { ScorecardPanel } from "../../components/ScorecardPanel";
+import { StudySummaryModal } from "../../components/StudySummaryModal";
 import { TranscriptPanel } from "../../components/TranscriptPanel";
 import { TutorAvatarPanel } from "../../components/TutorAvatarPanel";
 import { useAgentState } from "../../hooks/useAgentState";
@@ -36,13 +37,14 @@ function QuizRoom({
   error: string | null;
 }) {
   const entries = useTranscript();
-  const { scorecard, answered } = useScorecard(concepts);
+  const { scorecard, answered, summary } = useScorecard(concepts);
   const { state, audioTrack } = useAgentState();
   const totalQuestions = Math.min(8, concepts.length + 2);
 
   return (
     <>
       <RoomAudioRenderer />
+      {summary ? <StudySummaryModal summary={summary} onDone={onEnd} /> : null}
       <QuizLayout
         avatar={
           <TutorAvatarPanel
