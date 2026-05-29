@@ -1,7 +1,11 @@
 "use client";
 
 import "@livekit/components-styles";
-import { LiveKitRoom, RoomAudioRenderer } from "@livekit/components-react";
+import {
+  BarVisualizer,
+  LiveKitRoom,
+  RoomAudioRenderer,
+} from "@livekit/components-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type {
@@ -13,6 +17,8 @@ import { AudioControls } from "../../components/AudioControls";
 import { QuizLayout } from "../../components/QuizLayout";
 import { ScorecardPanel } from "../../components/ScorecardPanel";
 import { TranscriptPanel } from "../../components/TranscriptPanel";
+import { TutorAvatarPanel } from "../../components/TutorAvatarPanel";
+import { useAgentState } from "../../hooks/useAgentState";
 import { useScorecard } from "../../hooks/useScorecard";
 import { useTranscript } from "../../hooks/useTranscript";
 import { endSession } from "../../lib/api-client";
@@ -31,13 +37,19 @@ function QuizRoom({
 }) {
   const entries = useTranscript();
   const { scorecard, answered } = useScorecard(concepts);
+  const { state, audioTrack } = useAgentState();
   const totalQuestions = Math.min(8, concepts.length + 2);
 
   return (
     <>
       <RoomAudioRenderer />
       <QuizLayout
-        avatar={<p className="text-2xl font-bold">Pip</p>}
+        avatar={
+          <TutorAvatarPanel
+            state={state}
+            bars={<BarVisualizer trackRef={audioTrack} barCount={5} />}
+          />
+        }
         center={
           error ? (
             <p role="alert" className="text-xl text-rose-700">

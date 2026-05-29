@@ -1,6 +1,6 @@
 # B10 — Web agent-state avatar
 
-**MVP step:** 11 · **Depends on:** B06, B08 · **Status:** ☐
+**MVP step:** 11 · **Depends on:** B06, B08 · **Status:** ☑ Done
 
 ## Goal
 
@@ -31,3 +31,15 @@ speaking, in both visual and simple text form.
 - Unit: `useAgentState` maps participant attributes → `AgentState`; panel
   renders correct label/visual per state.
 - ≥ 70% coverage on the hook + panel state mapping.
+
+## Outcome (done)
+
+- `lib/agent-state.ts`: `normalizeAgentState` (LiveKit's wider union → our
+  `AgentState`; idle→listening, startup→connecting, failed/unknown→disconnected)
+  - `agentStateLabel` ("Pip is listening!/thinking…/talking!"). ADR-0012.
+- `TutorAvatarPanel`: 🦉 avatar with a `motion-safe` animation per state, an
+  `aria-live` text label, and a `bars` slot showing the `BarVisualizer` only
+  while speaking. State in text + motion (never colour alone).
+- `hooks/useAgentState`: thin `useVoiceAssistant` wrapper → `{ state,
+audioTrack }` (excluded from coverage). `/quiz` avatar slot now renders it.
+- ~99% coverage on lib + components; full gate green.
