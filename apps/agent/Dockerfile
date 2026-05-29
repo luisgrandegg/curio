@@ -1,5 +1,5 @@
-# Curio API (NestJS) — HTTP service on port 3001, run behind Caddy on a VPS.
-# See docs/adr/0004 (image) + docs/adr/0005 (hosting). // PROD: multi-stage prune.
+# Curio "Pip" agent — a persistent LiveKit worker (NOT an HTTP service).
+# It must stay always-on (no scale-to-zero). See docs/adr/0005 + docs/deploy/vps.md.
 FROM node:20-slim AS base
 ENV PNPM_HOME=/pnpm
 ENV PATH="$PNPM_HOME:$PATH"
@@ -17,9 +17,11 @@ COPY apps/web/package.json ./apps/web/package.json
 COPY apps/agent/package.json ./apps/agent/package.json
 RUN pnpm install --frozen-lockfile
 
-# 2) Build only the API; Turbo also builds its workspace deps (e.g. @curio/types).
+# 2) Build only the agent; Turbo also builds its workspace deps (@curio/types).
 COPY . .
-RUN pnpm turbo run build --filter=api
+RUN pnpm turbo run build --filter=agent
 
-EXPOSE 3001
-CMD ["pnpm", "--filter", "api", "start"]
+# No EXPOSE: the worker connects out to LiveKit and waits for jobs.
+# PROD: `download-files` to prefetch the Silero VAD model and speed cold start;
+# multi-stage prune to drop devDeps/sources.
+CMD ["pnpm", "--filter", "agent", "start"]

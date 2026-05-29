@@ -1,6 +1,6 @@
 # B18 — Deployment prep
 
-**MVP step:** 20 · **Depends on:** B17 · **Status:** ☐
+**MVP step:** 20 · **Depends on:** B17 · **Status:** ☑ Done
 
 > Produce the config/files and hand the operator the steps. Do NOT run deploys.
 > See `DEPLOYMENT.md` for the full operator guide.
@@ -19,14 +19,14 @@ web on **Vercel**. See **ADR-0005** (supersedes the Koyeb choice).
 
 ## Progress (incremental)
 
-- ☑ **API image** — `apps/api/Dockerfile` + `.dockerignore` + ADR-0004
-  (platform-agnostic; build/start verified; container build pending operator —
-  no Docker daemon in dev sandbox).
-- ☐ **docker-compose.yml + Caddyfile + VPS runbook** — land with the agent (B07)
-  since compose needs both services; HTTPS needs a hostname (domain/DDNS).
-- ☐ **web / Vercel config** — folded into B05 (real Next.js app).
-- ☐ **agent image** (always-on worker) — folded into B07 (real LiveKit worker).
-- ☐ **Tie-together** — CORS origin wiring + final runbook once all three exist.
+- ☑ **API image** — `apps/api/Dockerfile` + `.dockerignore` + ADR-0004.
+- ☑ **agent image** — `apps/agent/Dockerfile` (no EXPOSE; persistent worker;
+  `pnpm --filter agent start`).
+- ☑ **docker-compose.yml + Caddyfile** — api + always-on agent + Caddy
+  (auto-HTTPS for `$API_DOMAIN`). Validated with `docker compose config`.
+- ☑ **VPS runbook** — `docs/deploy/vps.md` (provision → `.env` → compose up →
+  Vercel for web → CORS wiring → phone test).
+- ☑ **web / Vercel** — documented in the runbook (root dir `apps/web`).
 
 ## Scope
 
@@ -55,3 +55,16 @@ web on **Vercel**. See **ADR-0005** (supersedes the Koyeb choice).
 
 - Infra item: validate Dockerfiles build and start commands resolve. No unit
   coverage target; `// PROD:` note that there's no CI gating before deploy.
+
+## Outcome (done)
+
+- `apps/agent/Dockerfile` mirrors the api image (manifests-first frozen install,
+  `turbo run build --filter=agent`, `HUSKY=0`); no EXPOSE — it's a persistent
+  worker. API Dockerfile comment de-Koyeb'd → VPS/Caddy.
+- Root `docker-compose.yml` (api + agent + Caddy) + `Caddyfile` (auto-HTTPS for
+  `$API_DOMAIN`, reverse-proxy to api); `API_DOMAIN` added to `.env.example`.
+- `docs/deploy/vps.md` — the operator runbook (VPS + Vercel, CORS, phone test).
+- Verified: clean `turbo run build --filter=agent` + start entry; `docker
+compose config` validates all three services. The actual `docker build` /
+  `compose up` is operator-run (no Docker daemon in the dev sandbox).
+- **Backlog complete (19/19).**

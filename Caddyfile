@@ -1,0 +1,6 @@
+# Automatic HTTPS for the Curio API. Caddy fetches a Let's Encrypt cert for the
+# hostname in $API_DOMAIN (set in .env) and reverse-proxies to the api service.
+# HTTPS is mandatory: the browser only allows camera/mic in a secure context.
+{$API_DOMAIN} {
+	reverse_proxy api:3001
+}
