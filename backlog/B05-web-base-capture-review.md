@@ -32,3 +32,19 @@ showing concepts returned by `POST /lessons`.
 - Unit: `api-client` request/response mapping; `SubjectAgePicker` selection
   state; `ConceptList` render. Mock fetch.
 - ≥ 70% coverage on `api-client` and capture/review components' logic.
+
+## Outcome (done)
+
+- Real Next.js 16 + React 19 + Tailwind 4 app (latest stable per maintainer —
+  ADR-0007 records the deviation from MVP's Next 15). Hand-rolled Tailwind
+  components (`// PROD:` shadcn).
+- `/` capture: `SubjectAgePicker` + `PhotoCapture` (file/camera input) →
+  `createLesson` (multipart) → `saveLesson` (sessionStorage) → `/review`.
+- `/review`: reads the stored lesson, renders `ConceptList`, "Start quiz" stub
+  (B06); redirects to `/` if there's no lesson.
+- Dyslexia-friendly defaults: Lexend, cream `#faf7ef` bg, dark-grey text,
+  line-height 1.6. Full settings panel is B13.
+- Tests: `api-client` (mock fetch, ok + friendly-error), `lesson-store`
+  round-trip, `SubjectAgePicker` + `PhotoCapture` + `ConceptList` (RTL/jsdom) —
+  **100%** coverage on components/lib; `src/app/**` verified by `next build`.
+- Verified: `next build` (Turbopack) green, all routes static; full gate green.

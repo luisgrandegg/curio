@@ -19,7 +19,7 @@ Every item must also pass the Constitution's product decision tests
 | B02 | [API base](./B02-api-base.md)                                   | B00, B01      | ☑      |
 | B03 | [Vision + lessons endpoint](./B03-api-vision-lessons.md) ⭐     | B02           | ☑      |
 | B04 | [Sessions + LiveKit token](./B04-api-sessions-token.md)         | B03           | ☑      |
-| B05 | [Web base + capture + review](./B05-web-base-capture-review.md) | B01, B03      | ☐      |
+| B05 | [Web base + capture + review](./B05-web-base-capture-review.md) | B01, B03      | ☑      |
 | B06 | [Web LiveKit connect](./B06-web-livekit-connect.md)             | B04, B05      | ☐      |
 | B07 | [Agent base + providers](./B07-agent-base-providers.md) ⭐      | B04           | ☐      |
 | B08 | [Agent tutor prompt + tools](./B08-agent-prompt-tools.md)       | B07           | ☐      |
