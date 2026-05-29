@@ -11,6 +11,23 @@ Everything in the repo needed for the Vercel (web) + Koyeb (api + agent)
 free-tier deployment, with the two non-negotiables satisfied: the agent is
 always-on, and all surfaces are HTTPS (camera/mic requirement).
 
+## Hosting platform
+
+Koyeb (per `DEPLOYMENT.md`) now requires a card / ~$30/mo, so we switched to a
+single small **VPS** running api + agent via `docker-compose` (Caddy for HTTPS),
+web on **Vercel**. See **ADR-0005** (supersedes the Koyeb choice).
+
+## Progress (incremental)
+
+- ☑ **API image** — `apps/api/Dockerfile` + `.dockerignore` + ADR-0004
+  (platform-agnostic; build/start verified; container build pending operator —
+  no Docker daemon in dev sandbox).
+- ☐ **docker-compose.yml + Caddyfile + VPS runbook** — land with the agent (B07)
+  since compose needs both services; HTTPS needs a hostname (domain/DDNS).
+- ☐ **web / Vercel config** — folded into B05 (real Next.js app).
+- ☐ **agent image** (always-on worker) — folded into B07 (real LiveKit worker).
+- ☐ **Tie-together** — CORS origin wiring + final runbook once all three exist.
+
 ## Scope
 
 - `apps/api/Dockerfile` — Node 20, pnpm, builds only `api`, EXPOSE 3001,
