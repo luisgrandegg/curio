@@ -32,3 +32,4 @@ mark the old one `Superseded by ADR-NNNN`.
 | [0007](./0007-web-nextjs-build-and-versions.md)            | Web app build setup, and "latest stable" versions       | Accepted |
 | [0008](./0008-livekit-web-connection.md)                   | LiveKit on the web — declarative room at the page level | Accepted |
 | [0009](./0009-agent-cascaded-pipeline-provider-factory.md) | Agent — cascaded STT→LLM→TTS via a provider factory     | Accepted |
+| [0010](./0010-quiz-data-channel-protocol.md)               | Quiz updates over a typed LiveKit data channel          | Accepted |
