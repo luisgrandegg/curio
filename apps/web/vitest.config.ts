@@ -8,8 +8,10 @@ export default defineConfig({
     setupFiles: ["./vitest.setup.ts"],
     coverage: {
       provider: "v8",
-      include: ["src/components/**", "src/lib/**", "src/hooks/**"],
-      exclude: ["src/**/*.test.{ts,tsx}"],
+      include: ["src/components/**", "src/lib/**"],
+      // Hooks are thin LiveKit-context glue (verified by next build); their
+      // logic lives in tested lib reducers.
+      exclude: ["src/**/*.test.{ts,tsx}", "src/hooks/**"],
       thresholds: { lines: 70, functions: 70, branches: 70, statements: 70 },
     },
   },

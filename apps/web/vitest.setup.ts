@@ -4,3 +4,6 @@ import { afterEach } from "vitest";
 
 // Unmount React trees between tests so queries don't see stale DOM.
 afterEach(() => cleanup());
+
+// jsdom doesn't implement scrollIntoView; stub it for auto-scroll effects.
+Element.prototype.scrollIntoView = () => {};

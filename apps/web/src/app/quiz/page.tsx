@@ -4,33 +4,87 @@ import "@livekit/components-styles";
 import { LiveKitRoom, RoomAudioRenderer } from "@livekit/components-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import type { CreateSessionResponse } from "@curio/types";
+import type {
+  CreateSessionResponse,
+  LessonConcept,
+  LessonResponse,
+} from "@curio/types";
 import { AudioControls } from "../../components/AudioControls";
 import { QuizLayout } from "../../components/QuizLayout";
+import { ScorecardPanel } from "../../components/ScorecardPanel";
+import { TranscriptPanel } from "../../components/TranscriptPanel";
+import { useScorecard } from "../../hooks/useScorecard";
+import { useTranscript } from "../../hooks/useTranscript";
 import { endSession } from "../../lib/api-client";
+import { loadLesson } from "../../lib/lesson-store";
 import { clearSession, loadSession } from "../../lib/session-store";
+
+// Rendered inside <LiveKitRoom> so the hooks can read the room context.
+function QuizRoom({
+  concepts,
+  onEnd,
+  error,
+}: {
+  concepts: LessonConcept[];
+  onEnd: () => void;
+  error: string | null;
+}) {
+  const entries = useTranscript();
+  const { scorecard, answered } = useScorecard(concepts);
+  const totalQuestions = Math.min(8, concepts.length + 2);
+
+  return (
+    <>
+      <RoomAudioRenderer />
+      <QuizLayout
+        avatar={<p className="text-2xl font-bold">Pip</p>}
+        center={
+          error ? (
+            <p role="alert" className="text-xl text-rose-700">
+              {error}
+            </p>
+          ) : (
+            <TranscriptPanel entries={entries} />
+          )
+        }
+        scorecard={
+          <ScorecardPanel
+            concepts={concepts}
+            scorecard={scorecard}
+            questionNumber={answered}
+            totalQuestions={totalQuestions}
+          />
+        }
+        controls={<AudioControls onEnd={onEnd} />}
+      />
+    </>
+  );
+}
 
 export default function QuizPage() {
   const router = useRouter();
   const [session, setSession] = useState<CreateSessionResponse | null>(null);
+  const [lesson, setLesson] = useState<LessonResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const stored = loadSession();
-    if (!stored) {
+    const storedSession = loadSession();
+    const storedLesson = loadLesson();
+    if (!storedSession || !storedLesson) {
       router.replace("/");
       return;
     }
-    setSession(stored);
+    setSession(storedSession);
+    setLesson(storedLesson);
   }, [router]);
 
-  if (!session) return null;
+  if (!session || !lesson) return null;
 
   const end = async (): Promise<void> => {
     try {
       await endSession(session.sessionId);
     } catch {
-      // Best-effort: leaving the screen shouldn't depend on the call.
+      // Best-effort: leaving shouldn't depend on the call.
     }
     clearSession();
     router.push("/");
@@ -47,23 +101,7 @@ export default function QuizPage() {
         setError("Pip is taking a nap — check your microphone and try again.")
       }
     >
-      <RoomAudioRenderer />
-      <QuizLayout
-        avatar={<p className="text-2xl font-bold">Pip</p>}
-        center={
-          error ? (
-            <p role="alert" className="text-xl text-rose-700">
-              {error}
-            </p>
-          ) : (
-            <p className="text-xl text-slate-600">Connecting to Pip…</p>
-          )
-        }
-        scorecard={
-          <p className="text-slate-500">Your progress appears here.</p>
-        }
-        controls={<AudioControls onEnd={end} />}
-      />
+      <QuizRoom concepts={lesson.concepts} onEnd={end} error={error} />
     </LiveKitRoom>
   );
 }

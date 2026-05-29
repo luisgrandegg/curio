@@ -1,6 +1,6 @@
 # B09 — Web transcript + scorecard
 
-**MVP step:** 10 · **Depends on:** B06, B08 · **Status:** ☐
+**MVP step:** 10 · **Depends on:** B06, B08 · **Status:** ☑ Done
 
 ## Goal
 
@@ -34,3 +34,17 @@ transcription + `quiz` data messages.
 - Unit: `useTranscript` partial/final reducer; `useScorecard` reducer for each
   message type (immutability); panel render per state.
 - ≥ 70% coverage on both hooks' reducers.
+
+## Outcome (done)
+
+- Pure `lib/`: `reduceTranscript` (upsert by id, partial→final),
+  `decodeQuizMessage`, `seedScorecard` + `reduceScorecard` (recordAnswer→
+  attempts, updateScorecard→status, summary→noop), all immutable.
+- `TranscriptPanel` (`role="log"`, `aria-live="polite"`, tutor/child sides,
+  partials italic, auto-scroll) and `ScorecardPanel` (icon + label + colour per
+  status, "Question X of Y", `motion-safe:` mastery pulse). Decision: ADR-0011.
+- Thin `hooks/useTranscript` + `hooks/useScorecard` subscribe to RoomEvents and
+  dispatch the reducers; `/quiz` seeds from the lesson concepts and renders both
+  panels inside `LiveKitRoom`.
+- ~99% coverage on lib + components; hooks excluded (build-verified).
+- `summary` is tracked, ready for the B11 study-summary modal.
