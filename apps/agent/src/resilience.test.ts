@@ -6,9 +6,15 @@ import { PIP_FALLBACK_LINE, installLlmFallback } from "./resilience.js";
 const ERROR_EVENT = voice.AgentSessionEventTypes.Error;
 
 /** Minimal stand-in for AgentSession — only `.on`/`.emit` are exercised. */
-function fakeSession(): { session: voice.AgentSession; emit: EventEmitter["emit"] } {
+function fakeSession(): {
+  session: voice.AgentSession;
+  emit: EventEmitter["emit"];
+} {
   const ee = new EventEmitter();
-  return { session: ee as unknown as voice.AgentSession, emit: ee.emit.bind(ee) };
+  return {
+    session: ee as unknown as voice.AgentSession,
+    emit: ee.emit.bind(ee),
+  };
 }
 
 const llmError = { error: { type: "llm_error" } };
