@@ -1,17 +1,17 @@
-# ADR-0004: API containerization for Koyeb
+# ADR-0004: API containerization (Docker image)
 
 - **Status:** Accepted
 - **Date:** 2026-05-28
 - **Deciders:** Curio team
-- **Related:** backlog B18; DEPLOYMENT.md; ADR-0002
+- **Related:** backlog B18; ADR-0002; ADR-0005 (where it runs)
 
 ## Context
 
-`apps/api` deploys to Koyeb as a Web service (HTTPS, request-driven). It lives in
-a pnpm + Turborepo monorepo, so the image must install the whole workspace,
-build only the API (plus its workspace deps like `@curio/types`), and start the
-NestJS server. We want this early to de-risk the monorepo-in-Docker path while
-the API is structurally stable, ahead of the web/agent images.
+`apps/api` (NestJS) ships as a container so it can run anywhere. It lives in a
+pnpm + Turborepo monorepo, so the image must install the whole workspace, build
+only the API (plus workspace deps like `@curio/types`), and start the server.
+We want this early to de-risk the monorepo-in-Docker path while the API is
+structurally stable. **Where** the image runs is a separate decision (ADR-0005).
 
 ## Decision
 
@@ -23,18 +23,15 @@ corepack. Copy workspace **manifests first** and run `pnpm install
 `.git` in the image), and add a `.dockerignore` to keep `node_modules`/`dist`/
 `.git` out of the build context.
 
-Alternatives rejected: **multi-stage prune now** (more moving parts before
-we've even deployed once — deferred as `// PROD:`); **buildpacks** (less
-predictable for a pnpm workspace than an explicit Dockerfile, per DEPLOYMENT.md).
+The image is **platform-agnostic** — it runs the same on a VPS, Render, Cloud
+Run, or any container host — so the hosting choice can change without touching
+this artifact. Alternatives rejected: **multi-stage prune now** (deferred as
+`// PROD:`); **buildpacks** (less predictable for a pnpm workspace).
 
 ## Consequences
 
-- The API image is reproducible and builds only what it needs.
-- Image carries devDeps + sources until a `// PROD:` multi-stage prune lands;
-  fine for the free-tier MVP.
-- All workspace manifests are copied so `--frozen-lockfile` validates cleanly —
-  the web/agent manifests must stay present even though those apps aren't built.
-- The web (Vercel) and agent (always-on Koyeb worker) images are **not** here;
-  they land with their feature work (B05/B07) and are tied together in B18.
-- Not yet verified by a real `docker build` (no daemon in the dev sandbox); the
-  operator confirms on first Koyeb build. The build/start commands are verified.
+- Reproducible image that builds only what it needs; runs on any container host.
+- Carries devDeps + sources until a `// PROD:` multi-stage prune; fine for MVP.
+- All workspace manifests are copied so `--frozen-lockfile` validates cleanly.
+- Not yet verified by a real `docker build` (no Docker daemon in the dev
+  sandbox); build/start commands are verified. Operator confirms on first build.
