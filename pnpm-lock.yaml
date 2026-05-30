@@ -102,6 +102,9 @@ importers:
       class-validator:
         specifier: 0.15.1
         version: 0.15.1
+      helmet:
+        specifier: 8.1.0
+        version: 8.1.0
       livekit-server-sdk:
         specifier: 2.15.4
         version: 2.15.4
@@ -2399,6 +2402,10 @@ packages:
   heap-js@2.7.1:
     resolution: {integrity: sha512-EQfezRg0NCZGNlhlDR3Evrw1FVL2G3LhU7EgPoxufQKruNBSYA8MiRPHeWbU+36o+Fhel0wMwM+sLEiBAlNLJA==}
     engines: {node: '>=10.0.0'}
+
+  helmet@8.1.0:
+    resolution: {integrity: sha512-jOiHyAZsmnr8LqoPGmCjYAaiuWwjAPLgY8ZX2XrmHawt99/u1y6RgrZMTeoPfpUbV96HOalYgz1qzkRbw54Pmg==}
+    engines: {node: '>=18.0.0'}
 
   help-me@5.0.0:
     resolution: {integrity: sha512-7xgomUX6ADmcYzFik0HzAxh/73YlKR9bmFzf51CZwR+b6YtzU2m0u49hQCqV6SvlqIqsaxovfwdvbnsw3b/zpg==}
@@ -5629,6 +5636,8 @@ snapshots:
       function-bind: 1.1.2
 
   heap-js@2.7.1: {}
+
+  helmet@8.1.0: {}
 
   help-me@5.0.0: {}
 
