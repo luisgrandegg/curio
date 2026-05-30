@@ -26,4 +26,36 @@ describe("LessonsService", () => {
     expect(result.id).toBeTruthy();
     expect(store.get(result.id)).toEqual(result);
   });
+
+  it("drops unsafe concepts before persisting", async () => {
+    const vision: VisionProvider = {
+      extractLesson: vi.fn().mockResolvedValue({
+        ...lesson,
+        concepts: [
+          { id: "c1", label: "Carrying", detail: "Carry the ten." },
+          { id: "c2", label: "Guns", detail: "How a gun works." },
+        ],
+      }),
+    };
+    const service = new LessonsService(vision, new LessonsStore());
+
+    const result = await service.createFromImage("BASE64", 9, "maths");
+
+    expect(result.concepts).toHaveLength(1);
+    expect(result.concepts[0]?.label).toBe("Carrying");
+  });
+
+  it("rejects with a kind 422 when no safe concept remains", async () => {
+    const vision: VisionProvider = {
+      extractLesson: vi.fn().mockResolvedValue({
+        ...lesson,
+        concepts: [{ id: "c1", label: "Guns", detail: "How to shoot." }],
+      }),
+    };
+    const service = new LessonsService(vision, new LessonsStore());
+
+    await expect(
+      service.createFromImage("BASE64", 9, "maths"),
+    ).rejects.toMatchObject({ status: 422 });
+  });
 });
